@@ -5,6 +5,7 @@ const workoutTabBtnsWrapper = document.getElementById("workout-tab-btns");
 const archiveBtn = document.getElementById("archivebtn-wrapper");
 const generateWorkoutBtn = document.getElementById("generate-workoutbtn-wrapper");
 const archiveWrapperEl = document.getElementById("archive-wrapper");
+const muscleGroupWrapperEl = document.getElementById("muscle-group-wrapper");
 var armGroupArray = [];
 var legGroupArray = [];
 var chestArray = [];
@@ -30,7 +31,6 @@ var loadArchive = function () {
       if (response.ok) {
       response.json().then(function (data) {
           createMuscleList(data);
-          console.log("working")
           console.log(data);
       });
       } else {
@@ -44,11 +44,9 @@ var loadArchive = function () {
 
 var createMuscleList = function (data) {
   reset();
+  
 
-  var muscleGroupWrapperEl = document.createElement("div");
-  muscleGroupWrapperEl.id = "muscle-group-wrapper";
-
-  //loop through data results to put individual muscles into groups
+  //loop through data results to put individual muscles into groups. maybe put into loadArchive??
   for (var i = 0; i < data.results.length; i++) {
     var muscle = data.results[i];
     
@@ -65,6 +63,7 @@ var createMuscleList = function (data) {
     };
   };
 
+  //generate muscle group cards
   var armCard = document.createElement("div");
   armCard.id = "muscle-card";
   armCard.classList = "muscle-card";
@@ -159,22 +158,118 @@ var createMuscleList = function (data) {
 
   coreCard.appendChild(coreCardName);
   coreCard.appendChild(coreImageContainer);
+    
+  muscleGroupWrapperEl.appendChild(armCard);
+  muscleGroupWrapperEl.appendChild(legCard);
+  muscleGroupWrapperEl.appendChild(chestCard);
+  muscleGroupWrapperEl.appendChild(backCard);
+  muscleGroupWrapperEl.appendChild(coreCard);
+  archiveWrapperEl.appendChild(muscleGroupWrapperEl);
 
-
-    
-    muscleGroupWrapperEl.appendChild(armCard);
-    muscleGroupWrapperEl.appendChild(legCard);
-    muscleGroupWrapperEl.appendChild(chestCard);
-    muscleGroupWrapperEl.appendChild(backCard);
-    muscleGroupWrapperEl.appendChild(coreCard);
-    archiveWrapperEl.appendChild(muscleGroupWrapperEl);
-    
-    
-    //loops through response data to display name and image of muscles
-    //assigns muscle id to be the same as the muscle id in the api
-    //muscleCard.setAttribute("data-muscleID", data.results[i].id);
   console.log(armGroupArray, legGroupArray, chestArray, backArray, coreArray);
   
+  armCard.addEventListener("click", loadArmMuscles);
+};
+
+var loadArmMuscles = function () {
+  muscleGroupWrapperEl.innerHTML = "";
+  var armMuscleList = document.createElement("div");
+  armMuscleList.id = "arm-muscles";
+
+  var returnBtn = document.createElement("button");
+  returnBtn.setAttribute("type", "button");
+  returnBtn.setAttribute("name", "returnbtn");
+  returnBtn.id = "returnbtn";
+  returnBtn.textContent = "Back";
+  muscleGroupWrapperEl.appendChild(returnBtn);
+
+  console.log(armGroupArray)
+
+  for (var i = 0; i < armGroupArray.length; i++) {
+    var muscleCard = document.createElement("div");
+    muscleCard.id = armGroupArray[i].name;
+    muscleCard.classList = "muscle-card";
+    //assigns muscle id to be the same as the muscle id in the api
+    muscleCard.setAttribute("data-muscleID", armGroupArray[i].id);
+
+    var muscleName = document.createElement("h2");
+    muscleName.id = "muscle-name";
+    muscleName.textContent = armGroupArray[i].name;
+
+    //checks if the background body should be front or back view
+    if (armGroupArray[i].is_front === true) {
+      var bodyImage =
+        "https://wger.de/static/images/muscles/muscular_system_front.svg";
+    } else {
+      var bodyImage =
+        "https://wger.de/static/images/muscles/muscular_system_back.svg";
+    }
+
+    //sets image url as a variable
+    var imageLocation = armGroupArray[i].image_url_secondary;
+
+    var imageContainer = document.createElement("div");
+    imageContainer.id = "image";
+    imageContainer.setAttribute(
+      "style",
+      "background-image: url(https://wger.de" +
+        imageLocation +
+        "), url(" +
+        bodyImage +
+        "); width: 150px; height: 276px; background-size: 150px"
+    );
+
+    muscleCard.appendChild(muscleName);
+    muscleCard.appendChild(imageContainer);
+    armMuscleList.appendChild(muscleCard);
+    muscleGroupWrapperEl.appendChild(armMuscleList);
+  }
+
+  var antDelt = document.getElementById("Anterior deltoid");
+  antDelt.addEventListener("click", loadAntDelt)
+  // var bicBrac = document.getElementById("Biceps brachii");
+  // bicBrac.addEventListener("click", loadBicBrac());
+  // var brach = document.getElementById("Brachialis");
+  // brach.addEventListener("click", loadBrach());
+  // var triBrach = document.getElementById("Triceps brachii");
+  // triBach.addEventListener("click", loadTriBach());
+
+  // console.log(antDelt, bicBrac, brach, triBrach);
+};
+
+var loadAntDelt = function () {
+  console.log(armGroupArray[1])
+  console.log("working")
+
+  var apiUrl =
+    "https://wger.de/api/v2/exercise/?muscles=" +
+    armGroupArray[1].id +
+    "&language=2&format=json";
+
+  fetch(apiUrl).then(function (response) {
+    if (response.ok) {
+      response.json().then(function (data) {
+        console.log(data);
+        displayExerciseList(data);
+      });
+    }
+  });
+};
+
+var displayExerciseList = function (data) {
+  muscleGroupWrapperEl.innerHTML = "";
+  for (var i = 0; i < data.results.length; i++) {
+    var indExerciseWrapper = document.createElement("div");
+    indExerciseWrapper.id = "ind-exercise-wrapper";
+    
+    var exerciseTitle = document.createElement("h2");
+    exerciseTitle.id = "exercise-title";
+    exerciseTitle.textContent = data.results[i].name;
+  
+    indExerciseWrapper.appendChild(exerciseTitle);
+    muscleGroupWrapperEl.appendChild(indExerciseWrapper);
+  
+  };
 };
 
 
