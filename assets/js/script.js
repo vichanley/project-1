@@ -7,6 +7,7 @@ const generateWorkoutBtn = document.getElementById("generate-workoutbtn-wrapper"
 const archiveWrapperEl = document.getElementById("archive-wrapper");
 const muscleGroupWrapperEl = document.getElementById("muscle-group-wrapper");
 var muscleGroupArray = [];
+const muscleGroup = ["Arms", "Legs", "Chest", "Back", "Core"];
 
 
 //FUNCTIONS
@@ -23,7 +24,7 @@ var loadArchive = function () {
   .then(function (response) {
       if (response.ok) {
       response.json().then(function (data) {
-          createMuscleList(data);
+          muscleGroupCards(data);
           console.log(data);
       });
       } else {
@@ -35,136 +36,70 @@ var loadArchive = function () {
   });
 };
 
-var createMuscleList = function (data) {
-  muscleGroupWrapperEl.innerHTML = "";
-  reset();
-  
-  //generate muscle group cards
-  var armCard = document.createElement("div");
-  armCard.id = "muscle-card";
-  armCard.classList = "muscle-card";
-  armCard.id = "arm-group";
-  
-  var armCardName = document.createElement("h2");
-  armCardName.classList = "card-title";
-  armCardName.textContent = "Arms";
+//generate muscle group cards
+function muscleGroupCards(data) {
+  console.log(muscleGroup);
 
-  var armImageContainer = document.createElement("div");
-  armImageContainer.id = "arm-image";
-  armImageContainer.setAttribute(
-    "style",
-    "background-image: url(./assets/images/arms.svg); background-repeat: no-repeat; width: 150px; height: 100px; background-size: 110px"
-  );
+  for (i = 0; i < muscleGroup.length; i++) {
+    var bodyCard = document.createElement("div");
+    bodyCard.id = "muscle-card";
+    bodyCard.classList = "muscle-card";
+    bodyCard.id = muscleGroup[i] + "-group";
 
-  armCard.appendChild(armCardName);
-  armCard.appendChild(armImageContainer);
+    var bodyCardName = document.createElement("h2");
+    bodyCardName.classList = "card-title";
+    bodyCardName.textContent = muscleGroup[i];
 
-  var legCard = document.createElement("div");
-  legCard.id = "muscle-card";
-  legCard.classList = "muscle-card";
-  legCard.id = "leg-group";
-  
-  var legCardName = document.createElement("h2");
-  legCardName.classList = "card-title";
-  legCardName.textContent = "Legs";
+    var bodyImageContainer = document.createElement("div");
+    bodyImageContainer.id = muscleGroup[i] + "-image";
+    bodyImageContainer.setAttribute(
+      "style",
+      "background-image: url(./assets/images/" +
+        muscleGroup[i] +
+        ".svg); background-repeat: no-repeat; width: 150px; height: 100px; background-size: 110px"
+    );
 
-  var legImageContainer = document.createElement("div");
-  legImageContainer.id = "leg-image";
-  legImageContainer.setAttribute(
-    "style",
-    "background-image: url(./assets/images/legs.svg); background-repeat: no-repeat; width: 150px; height: 100px; background-size: 110px"
-  );
+    bodyCard.append(bodyCardName, bodyImageContainer);
+    muscleGroupWrapperEl.appendChild(bodyCard);
+    archiveWrapperEl.appendChild(muscleGroupWrapperEl);
 
-  legCard.appendChild(legCardName);
-  legCard.appendChild(legImageContainer);
+    console.log(bodyCard);
+  }
 
-  var chestCard = document.createElement("div");
-  chestCard.id = "muscle-card";
-  chestCard.classList = "muscle-card";
-  chestCard.id = "chest-group";
-  
-  var chestCardName = document.createElement("h2");
-  chestCardName.classList = "card-title";
-  chestCardName.textContent = "Chest";
-
-  var chestImageContainer = document.createElement("div");
-  chestImageContainer.id = "chest-image";
-  chestImageContainer.setAttribute(
-    "style",
-    "background-image: url(./assets/images/chest.svg); background-repeat: no-repeat; width: 150px; height: 100px; background-size: 110px"
-  );
-
-  chestCard.appendChild(chestCardName);
-  chestCard.appendChild(chestImageContainer);
-
-  var backCard = document.createElement("div");
-  backCard.id = "muscle-card";
-  backCard.classList = "muscle-card";
-  backCard.id = "back-group";
-  
-  var backCardName = document.createElement("h2");
-  backCardName.classList = "card-title";
-  backCardName.textContent = "Back";
-
-  var backImageContainer = document.createElement("div");
-  backImageContainer.id = "back-image";
-  backImageContainer.setAttribute(
-    "style",
-    "background-image: url(./assets/images/back.svg); background-repeat: no-repeat; width: 150px; height: 100px; background-size: 110px"
-  );
-
-  backCard.appendChild(backCardName);
-  backCard.appendChild(backImageContainer);
-
-  var coreCard = document.createElement("div");
-  coreCard.id = "muscle-card";
-  coreCard.classList = "muscle-card";
-  coreCard.id = "core-group";
-
-  var coreCardName = document.createElement("h2");
-  coreCardName.classList = "card-title";
-  coreCardName.textContent = "Core";
-
-  var coreImageContainer = document.createElement("div");
-  coreImageContainer.id = "core-image";
-  coreImageContainer.setAttribute(
-    "style",
-    "background-image: url(./assets/images/core.svg); background-repeat: no-repeat; width: 150px; height: 100px; background-size: 110px"
-  );
-
-  coreCard.appendChild(coreCardName);
-  coreCard.appendChild(coreImageContainer);
-    
-  muscleGroupWrapperEl.appendChild(armCard);
-  muscleGroupWrapperEl.appendChild(legCard);
-  muscleGroupWrapperEl.appendChild(chestCard);
-  muscleGroupWrapperEl.appendChild(backCard);
-  muscleGroupWrapperEl.appendChild(coreCard);
-  archiveWrapperEl.appendChild(muscleGroupWrapperEl);
-  
   //add event listeners for muscle group cards
   muscleGroupWrapperEl.addEventListener("click", (event) => {
-    if (event.target.id === "arm-image") {
+    if (event.target.id === "Arms-image") {
       console.log("ARM CLICK");
       for (var i = 0; i < data.results.length; i++) {
         var muscle = data.results[i];
 
-        if (muscle.id == 2 || muscle.id == 1 || muscle.id == 13 || muscle.id == 5) {
+        if (
+          muscle.id == 2 ||
+          muscle.id == 1 ||
+          muscle.id == 13 ||
+          muscle.id == 5
+        ) {
           muscleGroupArray.push(muscle);
           loadIndMuscles(muscleGroupArray);
-        };
-      };
-    } else if (event.target.id === "leg-image") {
+        }
+      }
+    } else if (event.target.id === "Legs-image") {
       console.log("LEG CLICK");
       for (var i = 0; i < data.results.length; i++) {
         var muscle = data.results[i];
 
-        if (muscle.id == 11 || muscle.id == 7 || muscle.id == 8 || muscle.id == 10 || muscle.id == 15) {
+        if (
+          muscle.id == 11 ||
+          muscle.id == 7 ||
+          muscle.id == 8 ||
+          muscle.id == 10 ||
+          muscle.id == 15
+        ) {
           muscleGroupArray.push(muscle);
           loadIndMuscles(muscleGroupArray);
-        };
-      };
-    } else if (event.target.id === "chest-image") {
+        }
+      }
+    } else if (event.target.id === "Chest-image") {
       console.log("CHEST CLICK");
       for (var i = 0; i < data.results.length; i++) {
         var muscle = data.results[i];
@@ -172,9 +107,9 @@ var createMuscleList = function (data) {
         if (muscle.id == 4) {
           muscleGroupArray.push(muscle);
           loadIndMuscles(muscleGroupArray);
-        };
-      };
-    } else if (event.target.id === "back-image") {
+        }
+      }
+    } else if (event.target.id === "Back-image") {
       console.log("BACK CLICK");
       for (var i = 0; i < data.results.length; i++) {
         var muscle = data.results[i];
@@ -182,9 +117,9 @@ var createMuscleList = function (data) {
         if (muscle.id == 12 || muscle.id == 9) {
           muscleGroupArray.push(muscle);
           loadIndMuscles(muscleGroupArray);
-        };
-      };
-    } else if (event.target.id === "core-image"){
+        }
+      }
+    } else if (event.target.id === "Core-image") {
       console.log("CORE CLICK");
       for (var i = 0; i < data.results.length; i++) {
         var muscle = data.results[i];
@@ -192,11 +127,10 @@ var createMuscleList = function (data) {
         if (muscle.id == 14 || muscle.id == 6 || muscle.id == 3) {
           muscleGroupArray.push(muscle);
           loadIndMuscles(muscleGroupArray);
-        };
-      };
+        }
+      }
     }
   });
-  console.log(muscleGroupArray)
 };
 
 var loadIndMuscles = function (muscleGroupArray) {
@@ -251,76 +185,7 @@ var loadIndMuscles = function (muscleGroupArray) {
     muscleList.appendChild(muscleCard);
     muscleGroupWrapperEl.appendChild(muscleList);
   }
-};;
-
-
-
-//BEGIN ARM MUSCLE FUNCTIONS
-// var loadArmMuscles = function () {
-  // muscleGroupWrapperEl.innerHTML = "";
-  // var armMuscleList = document.createElement("div");
-  // armMuscleList.id = "arm-muscles";
-
-  // var returnBtn = document.createElement("button");
-  // returnBtn.setAttribute("type", "button");
-  // returnBtn.setAttribute("name", "returnbtn");
-  // returnBtn.id = "returnbtn";
-  // returnBtn.textContent = "Back";
-  // muscleGroupWrapperEl.appendChild(returnBtn);
-
-  // //loop through array to generate individual muscle cards
-  // for (var i = 0; i < armGroupArray.length; i++) {
-  //   var muscleCard = document.createElement("div");
-  //   muscleCard.id = armGroupArray[i].name;
-  //   muscleCard.classList = "muscle-card";
-  //   //assigns muscle id to be the same as the muscle id in the api
-  //   muscleCard.setAttribute("data-muscleID", armGroupArray[i].id);
-
-  //   var muscleName = document.createElement("h2");
-  //   muscleName.id = "muscle-name";
-  //   muscleName.textContent = armGroupArray[i].name;
-
-  //   //checks if the background body should be front or back view
-  //   if (armGroupArray[i].is_front === true) {
-  //     var bodyImage =
-  //       "https://wger.de/static/images/muscles/muscular_system_front.svg";
-  //   } else {
-  //     var bodyImage =
-  //       "https://wger.de/static/images/muscles/muscular_system_back.svg";
-  //   }
-
-  //   //sets image url as a variable
-  //   var imageLocation = armGroupArray[i].image_url_secondary;
-
-  //   var imageContainer = document.createElement("div");
-  //   imageContainer.id = "image";
-  //   imageContainer.setAttribute(
-  //     "style",
-  //     "background-image: url(https://wger.de" +
-  //       imageLocation +
-  //       "), url(" +
-  //       bodyImage +
-  //       "); width: 150px; height: 276px; background-size: 150px"
-  //   );
-
-  //   muscleCard.appendChild(muscleName);
-  //   muscleCard.appendChild(imageContainer);
-  //   armMuscleList.appendChild(muscleCard);
-  //   muscleGroupWrapperEl.appendChild(armMuscleList);
-  // };
-
-//   //add event listeners for individual cards to load exercise lists
-//   var antDelt = document.getElementById("Anterior deltoid");
-//   antDelt.addEventListener("click", loadAntDelt)
-//   // var bicBrac = document.getElementById("Biceps brachii");
-//   // bicBrac.addEventListener("click", loadBicBrac());
-//   // var brach = document.getElementById("Brachialis");
-//   // brach.addEventListener("click", loadBrach());
-//   // var triBrach = document.getElementById("Triceps brachii");
-//   // triBach.addEventListener("click", loadTriBach());
-
-//   // console.log(antDelt, bicBrac, brach, triBrach);
-// };
+};
 
 var loadAntDelt = function () {
   var apiUrl =
@@ -435,10 +300,6 @@ var displayExerciseList = function (data) {
     muscleGroupWrapperEl.appendChild(indExerciseWrapper);
   };
 };
-
-
-
-
 
 
 //EVENT LISTENERS
