@@ -1,10 +1,11 @@
-module.exports = {
-  content: ['index.html'],
+tailwind.config = {
+  content: ['./index.html'],
   theme: {
     extend: {
       colors: {
-        'charleston': '#142429',
-      }
+        'primary': '#142429',
+        'secondary': '#1B3137',
+      },
     },
   },
   plugins: [],

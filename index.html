@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- tailwind link -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography,line-clamp,aspect-ratio,forms"></script>
+    <!-- tailwind js link -->
+    <script src="./tailwind.config.js"></script>
     <!-- font awesome link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+    />
     <!-- css link -->
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <title>fitify</title>
-</head>
-<body>
-  <!-- home page -->
-  <main class="w-full h-screen bg-gradient-to-br from-[#142429] to-[#284953]">
-    <div></div>
-    <div></div>
-  </main>
+  </head>
+
+  <body class="h-screen bg-gradient-to-r from-[color:var(--primary)] to-secondary">
     
+    <main class="grid">
+      <!-- home page -->
+      <section class="row-span-3 ">
+        01
+      </section>
 
-<!-- workout tab -->
-<main id="workout-tab">
+      <!-- bottom navigation -->
+      <nav class="bg-white">
+        02  
+      </nav>
 
-  <article id="workout-tab-btns">
+      <!-- workout tab -->
+      <section>
+        <article id="workout-tab-btns">
     <div id="archivebtn-wrapper">
       <button type="button" id="archivebtn" name="archivebtn">Exercise Archive</button>
       
@@ -41,18 +53,51 @@
       <!-- dynamically generate inside here -->
     </div>
   </article>
-
-
-</main>
-
-
-
+  </section>
+  </main>
   <!-- jQuery link -->
-  <script
+
+ <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
   <script src="./assets/js/script.js"></script>
-</body>
+  </body>
 </html>
+
+    <!-- home page
+    <main class="row-span-2 grid grid-cols-4 gap-4 grid-rows-3 bg-gradient-to-r from-[color:var(--primary)] to-secondary">
+      <div class="col-span-2 row-span-2 bg-[#223C44] rounded-lg">1</div>
+      <div class="row-start-3 bg-[#223C44] rounded-lg">2</div>
+  </main>
+
+  bottom navigation
+  <nav class="row-start-3 container grid grid-cols-4 grid-rows-1 gap-4 bg-gradient-to-r from-[color:var(--primary)] to-secondary text-white">
+    <button class=""><i class="fas fa-carrot"></i></button>
+    <button><i class="fas fa-home"></i></button>
+    <button><i class="fas fa-list"></i></button>
+    <button><i class="fas fa-dumbbell"></i></button>
+  </nav> -->
+
+  <!-- <body>
+    home page
+    <main
+      class="w-full h-[46rem] flex items-center justify-center bg-gradient-to-r from-[color:var(--primary)] to-secondary"
+    >
+      <section class="grid grid-cols-1 grid-rows-3 gap-12 w-9/12 h-5/6">
+        <div class="row-span-2 bg-[#223C44] w-full rounded-lg">1</div>
+        <div class="row-start-3 bg-[#223C44] w-full rounded-lg">2</div>
+      </section>
+    </main>
+
+    bottom navigation
+    <nav class="sticky bottom-0 bg-gradient-to-r from-[color:var(--primary)] to-secondary text-white border-t-4">
+      <section class="grid grid-cols-4 grid-rows-1 gap-4">
+        <button class=""><i class="fas fa-carrot"></i></button>
+        <button><i class="fas fa-home"></i></button>
+        <button><i class="fas fa-list"></i></button>
+        <button><i class="fas fa-dumbbell"></i></button>
+      </section>
+    </nav>
+  </body> -->
