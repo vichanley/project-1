@@ -13,6 +13,9 @@ var backArray = [];
 var coreArray = [];
 
 
+var muscleGroupArray = [];
+
+
 //FUNCTIONS
 var reset = function () { 
   armGroupArray = [];
@@ -20,6 +23,8 @@ var reset = function () {
   chestArray = [];
   backArray = [];
   coreArray = [];
+
+  muscleGroupArray=[];
 };
 
 var loadArchive = function () {
@@ -169,6 +174,26 @@ var createMuscleList = function (data) {
   armCard.addEventListener("click", loadArmMuscles);
   legCard.addEventListener("click", loadLegMuscles);
 };
+
+var loadIndMuscles = function () {
+   for (var i = 0; i < data.results.length; i++) {
+    var muscle = data.results[i];
+    
+    if (muscle.id == 2 || muscle.id == 1 || muscle.id == 13 || muscle.id == 5) {
+      muscleGroupArray.push(muscle);
+    } else if (muscle.id == 11 || muscle.id == 7 || muscle.id == 8 || muscle.id == 10 || muscle.id == 15) {
+      muscleGroupArray.push(muscle);
+    } else if (muscle.id == 12 || muscle.id == 9) {
+      muscleGroupArray.push(muscle);
+    } else if (muscle.id == 14 || muscle.id == 6 || muscle.id == 3) {
+      muscleGroupArray.push(muscle);
+    } else {
+      muscleGroupArray.push(muscle);
+    };
+  };
+}
+
+
 
 //BEGIN ARM MUSCLE FUNCTIONS
 var loadArmMuscles = function () {
