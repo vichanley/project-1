@@ -33,8 +33,11 @@
 
       <!-- workout tab -->
     <section id="workout-tab">
+      <h2 id="workout-tab-title">
+        <!-- dynamically generate inside here -->
+      </h2>
+
       <article id="archive-wrapper">
-        <h2>Select a Day to View Muscles</h2>
     
         <div id="muscle-group-wrapper">
           <!-- dynamically generate inside here -->
@@ -47,25 +50,26 @@
         <div id="exercise-wrapper">
           <!-- dynamically generate inside here -->
         </div>
-      </article id="generate-workout-wrapper">
-    
-    
-    
-      <article id="workout-tab-btns">
-        <div id="generate-workoutbtn-wrapper">
-          <button type="button" id="archivebtn" name="archivebtn">Generate Workout</button>
-        </div>
       </article>
     
-    
-    
-      <article>
-    
-      </article>
+      
+      
+      <form id="generate-workout-wrapper">
+          <select id="workout-list">
+          <option>---Choose A Day---</option>
+          <option>Arms</option>
+          <option>Legs</option>
+          <option>Arms</option>
+
+        </select>
+        <button type="button" id="generate-workout-btn">Button</button>
+      </form>
+      
     </section>
   </main>
 
   <!-- jQuery link -->
+  
  <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="

@@ -1,10 +1,12 @@
 //VARIABLES
 //workout tab variables
 const workoutTabEl = document.getElementById("workout-tab");
+const workoutTabTitleEl = document.getElementById("workout-tab-title");
 const workoutTabBtnsWrapper = document.getElementById("workout-tab-btns");
-const archiveBtn = document.getElementById("archivebtn-wrapper");
-const generateWorkoutBtn = document.getElementById("generate-workoutbtn-wrapper");
+const generateWorkoutBtn = document.getElementById("generate-workout-btn");
 const archiveWrapperEl = document.getElementById("archive-wrapper");
+const generateWorkoutWrapperEl = document.getElementById("generate-workout-wrapper");
+const workoutDropdownEl = document.getElementById("workout-list");
 const muscleGroupWrapperEl = document.getElementById("muscle-group-wrapper");
 const exerciseListWrapperEl = document.getElementById("exercise-wrapper");
 const individualMusclesWrapperEl = document.getElementById("individual-muscle-wrapper");
@@ -18,6 +20,8 @@ var reset = function () {
 };
 
 var loadArchive = function () {
+  workoutTabTitleEl.textContent = "Select a Day to View Muscles";
+
   reset();
   var muscleApi = "https://wger.de/api/v2/muscle/?format=json";
 
@@ -45,9 +49,6 @@ function muscleGroupCards(data) {
   individualMusclesWrapperEl.innerHTML = "";
   reset();
 
-
-  console.log(muscleGroup);
-
   for (i = 0; i < muscleGroup.length; i++) {
     var bodyCard = document.createElement("div");
     bodyCard.id = "muscle-card";
@@ -70,9 +71,14 @@ function muscleGroupCards(data) {
     bodyCard.append(bodyCardName, bodyImageContainer);
     muscleGroupWrapperEl.appendChild(bodyCard);
     archiveWrapperEl.appendChild(muscleGroupWrapperEl);
+  };
 
-    console.log(bodyCard);
-  }
+
+  //add dropdown list to select muscle group to generate random workout
+
+
+
+
 
   //add event listeners for muscle group cards. 
   //will return error when user has gone group card -> ind muscle -> back to group cards -> other group card(because group cards are not present in html).this does not break the functionality
@@ -143,6 +149,7 @@ function muscleGroupCards(data) {
 };
 
 var loadIndMuscles = function (muscleGroupArray) {
+  workoutTabTitleEl.textContent = "Select Individual Muscle to Display Details";
   muscleGroupWrapperEl.innerHTML = "";
   exerciseListWrapperEl.innerHTML = "";
   individualMusclesWrapperEl.innerHTML = "";
@@ -197,18 +204,14 @@ var loadIndMuscles = function (muscleGroupArray) {
     muscleCard.appendChild(imageContainer);
     muscleList.appendChild(muscleCard);
     individualMusclesWrapperEl.appendChild(muscleList);
-  }
-
+  };
 
   //add event delegation listeners for ind muscles to push to fetch 
   muscleList.addEventListener("click", function (event) {
     var muscleID = event.target.id;
 
     loadExerciseList(muscleID);
-   
   });
-
-
 };
 
 var loadExerciseList = function (muscleID) {
@@ -228,9 +231,43 @@ var loadExerciseList = function (muscleID) {
       });
     }
   });
-
-
 };
+
+async function fetchArms() {
+  var armData = await Promise.all([
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=2&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=1&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=13&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=5&language=2&format=json"
+    ).then((response) => response.json()),
+  ]);
+  console.log(armData);
+}
+
+var randomizeWorkout = function () {
+  console.log("Random Workout");
+  
+  
+  var chosenDay =
+    workoutDropdownEl.options[workoutDropdownEl.selectedIndex].value;
+  console.log(chosenDay)
+
+  if (chosenDay === "Arms") {
+    console.log("arms")
+
+    fetchArms();
+    
+  }
+}
+
+
 
 var displayExerciseList = function (data) {
   muscleGroupWrapperEl.innerHTML = "";
@@ -260,5 +297,7 @@ var displayExerciseList = function (data) {
 
 
 //EVENT LISTENERS
-//need to add one for when workout tab is clicked
+//need to add one for when workout tab is clicked to call loadArchive
+generateWorkoutBtn.addEventListener("click", randomizeWorkout);
+
 loadArchive();
