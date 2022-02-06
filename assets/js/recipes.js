@@ -3,6 +3,10 @@ var ingredientSearchEl = document.querySelector("#ingredients");
 var recipeContainerEl = document.querySelector("#recipes-container");
 
 
+// var appKey = "&app_key=38100359b40740841a18a00837f9be68"
+// var appId = "&app_id=7ac48de2"
+
+//Victoria's API keys
 var appKey = "&app_key=38100359b40740841a18a00837f9be68"
 var appId = "&app_id=7ac48de2"
 
