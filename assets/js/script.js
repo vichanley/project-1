@@ -6,6 +6,8 @@ const archiveBtn = document.getElementById("archivebtn-wrapper");
 const generateWorkoutBtn = document.getElementById("generate-workoutbtn-wrapper");
 const archiveWrapperEl = document.getElementById("archive-wrapper");
 const muscleGroupWrapperEl = document.getElementById("muscle-group-wrapper");
+const exerciseListWrapperEl = document.getElementById("exercise-wrapper");
+const individualMusclesWrapperEl = document.getElementById("individual-muscle-wrapper");
 var muscleGroupArray = [];
 const muscleGroup = ["Arms", "Legs", "Chest", "Back", "Core"];
 
@@ -38,6 +40,12 @@ var loadArchive = function () {
 
 //generate muscle group cards
 function muscleGroupCards(data) {
+  muscleGroupWrapperEl.innerHTML = "";
+  exerciseListWrapperEl.innerHTML = "";
+  individualMusclesWrapperEl.innerHTML = "";
+  reset();
+
+
   console.log(muscleGroup);
 
   for (i = 0; i < muscleGroup.length; i++) {
@@ -66,7 +74,8 @@ function muscleGroupCards(data) {
     console.log(bodyCard);
   }
 
-  //add event listeners for muscle group cards
+  //add event listeners for muscle group cards. 
+  //will return error when user has gone group card -> ind muscle -> back to group cards -> other group card(because group cards are not present in html).this does not break the functionality
   muscleGroupWrapperEl.addEventListener("click", (event) => {
     if (event.target.id === "Arms-image") {
       console.log("ARM CLICK");
@@ -135,6 +144,8 @@ function muscleGroupCards(data) {
 
 var loadIndMuscles = function (muscleGroupArray) {
   muscleGroupWrapperEl.innerHTML = "";
+  exerciseListWrapperEl.innerHTML = "";
+  individualMusclesWrapperEl.innerHTML = "";
   var muscleList = document.createElement("div");
   muscleList.id = "muscles";
 
@@ -143,7 +154,9 @@ var loadIndMuscles = function (muscleGroupArray) {
   returnBtn.setAttribute("name", "returnbtn");
   returnBtn.id = "returnbtn";
   returnBtn.textContent = "Back";
-  muscleGroupWrapperEl.appendChild(returnBtn);
+  individualMusclesWrapperEl.appendChild(returnBtn);
+
+  returnBtn.addEventListener("click", muscleGroupCards)
 
   //loop through array to generate individual muscle cards
   for (var i = 0; i < muscleGroupArray.length; i++) {
@@ -170,7 +183,7 @@ var loadIndMuscles = function (muscleGroupArray) {
     var imageLocation = muscleGroupArray[i].image_url_secondary;
 
     var imageContainer = document.createElement("div");
-    imageContainer.id = "image";
+    imageContainer.id = muscleGroupArray[i].id;
     imageContainer.setAttribute(
       "style",
       "background-image: url(https://wger.de" +
@@ -183,14 +196,28 @@ var loadIndMuscles = function (muscleGroupArray) {
     muscleCard.appendChild(muscleName);
     muscleCard.appendChild(imageContainer);
     muscleList.appendChild(muscleCard);
-    muscleGroupWrapperEl.appendChild(muscleList);
+    individualMusclesWrapperEl.appendChild(muscleList);
   }
+
+
+  //add event delegation listeners for ind muscles to push to fetch 
+  muscleList.addEventListener("click", function (event) {
+    var muscleID = event.target.id;
+
+    loadExerciseList(muscleID);
+   
+  });
+
+
 };
 
-var loadAntDelt = function () {
+var loadExerciseList = function (muscleID) {
+  muscleGroupWrapperEl.innerHTML = "";
+  exerciseListWrapperEl.innerHTML = "";
+  individualMusclesWrapperEl.innerHTML = "";
   var apiUrl =
     "https://wger.de/api/v2/exercise/?muscles=" +
-    armGroupArray[1].id +
+    muscleID +
     "&language=2&format=json";
 
   fetch(apiUrl).then(function (response) {
@@ -201,104 +228,34 @@ var loadAntDelt = function () {
       });
     }
   });
-};
 
-//BEGIN LEG MUSCLE FUNCTIONS
-// var loadLegMuscles = function () {
-//   muscleGroupWrapperEl.innerHTML = "";
-//   var legMuscleList = document.createElement("div");
-//   legMuscleList.id = "leg-muscles";
 
-//   var returnBtn = document.createElement("button");
-//   returnBtn.setAttribute("type", "button");
-//   returnBtn.setAttribute("name", "returnbtn");
-//   returnBtn.id = "returnbtn";
-//   returnBtn.textContent = "Back";
-//   muscleGroupWrapperEl.appendChild(returnBtn);
-
-//   //loop through array to generate individual muscle cards
-//   for (var i = 0; i < legGroupArray.length; i++) {
-//     var muscleCard = document.createElement("div");
-//     muscleCard.id = legGroupArray[i].name;
-//     muscleCard.classList = "muscle-card";
-//     //assigns muscle id to be the same as the muscle id in the api
-//     muscleCard.setAttribute("data-muscleID", legGroupArray[i].id);
-
-//     var muscleName = document.createElement("h2");
-//     muscleName.id = "muscle-name";
-//     muscleName.textContent = legGroupArray[i].name;
-
-//     //checks if the background body should be front or back view
-//     if (legGroupArray[i].is_front === true) {
-//       var bodyImage =
-//         "https://wger.de/static/images/muscles/muscular_system_front.svg";
-//     } else {
-//       var bodyImage =
-//         "https://wger.de/static/images/muscles/muscular_system_back.svg";
-//     }
-
-//     //sets image url as a variable
-//     var imageLocation = legGroupArray[i].image_url_secondary;
-
-//     var imageContainer = document.createElement("div");
-//     imageContainer.id = "image";
-//     imageContainer.setAttribute(
-//       "style",
-//       "background-image: url(https://wger.de" +
-//         imageLocation +
-//         "), url(" +
-//         bodyImage +
-//         "); width: 150px; height: 276px; background-size: 150px"
-//     );
-
-//     muscleCard.appendChild(muscleName);
-//     muscleCard.appendChild(imageContainer);
-//     legMuscleList.appendChild(muscleCard);
-//     muscleGroupWrapperEl.appendChild(legMuscleList);
-//   }
-
-//   //add event listeners for individual cards to load exercise lists
-//   var bicFem = document.getElementById("Biceps femoris");
-//   bicFem.addEventListener("click", loadBicFem);
-//   // var gastro = document.getElementById("Gastrocnemius");
-//   // gastro.addEventListener("click", loadGastro);
-//   // var glutMax = document.getElementById("Gluteus maximus");
-//   // glutMax.addEventListener("click", loadGlutmax);
-//   // var quadFem = document.getElementById("Quadraceps femoris");
-//   // quadFem.addEventListener("click", loadQuadFem);
-//   // var Sole = document.getElementById("Soleus");
-//   // quadFem.addEventListener("click", loadSole);
-// };
-
-var loadBicFem = function () {
-  var apiUrl =
-    "https://wger.de/api/v2/exercise/?muscles=" +
-    legGroupArray[1].id +
-    "&language=2&format=json";
-
-  fetch(apiUrl).then(function (response) {
-    if (response.ok) {
-      response.json().then(function (data) {
-        console.log(data);
-        displayExerciseList(data);
-      });
-    }
-  });
 };
 
 var displayExerciseList = function (data) {
   muscleGroupWrapperEl.innerHTML = "";
+  exerciseListWrapperEl.innerHTML = "";
+  individualMusclesWrapperEl.innerHTML = "";
   for (var i = 0; i < data.results.length; i++) {
     var indExerciseWrapper = document.createElement("div");
-    indExerciseWrapper.id = "ind-exercise-wrapper";
+    indExerciseWrapper.id = data.results[i].id;
     
     var exerciseTitle = document.createElement("h2");
     exerciseTitle.id = "exercise-title";
     exerciseTitle.textContent = data.results[i].name;
   
     indExerciseWrapper.appendChild(exerciseTitle);
-    muscleGroupWrapperEl.appendChild(indExerciseWrapper);
+    exerciseListWrapperEl.appendChild(indExerciseWrapper);
   };
+
+  var returnBtn = document.createElement("button");
+  returnBtn.setAttribute("type", "button");
+  returnBtn.setAttribute("name", "returnbtn");
+  returnBtn.id = "returnbtn";
+  returnBtn.textContent = "Back";
+  exerciseListWrapperEl.appendChild(returnBtn);
+
+  returnBtn.addEventListener("click", loadIndMuscles);
 };
 
 
