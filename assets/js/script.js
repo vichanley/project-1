@@ -225,6 +225,9 @@ function loadMuscles(muscleArray) {
 // loadMuscles(...armsArray);
 
 
+
+
+
 // function loadMuscles() {
 
 //   var muscleArrays = [armsArray, legsArray, chestArray, backArray, coreArray];
@@ -294,8 +297,6 @@ function loadMuscles(muscleArray) {
 //     });
 //   };
 // }
-
-
 
 
 
