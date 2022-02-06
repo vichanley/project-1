@@ -85,6 +85,8 @@ var displayRecipes = function(data, searchTerm) {
         linksEl.setAttribute("target", "_blank");
 
         //add heart icon to each container
+        var heartIconEl = document.createElement("i");
+        heartIconEl.classList = "far fa-heart"
 
         //add nutrition information for each recipe
         var nutritionUlEl = document.createElement("ul");
@@ -122,6 +124,7 @@ var displayRecipes = function(data, searchTerm) {
         recipeEl.appendChild(linksEl);
 
         //append heart to container
+        recipeEl.appendChild(heartIconEl);
 
         //append nutrion information to list
         nutritionUlEl.appendChild(servingsLiEl);
