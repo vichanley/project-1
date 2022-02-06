@@ -260,4 +260,5 @@ var displayExerciseList = function (data) {
 
 
 //EVENT LISTENERS
-archiveBtn.addEventListener("click", loadArchive);
+//need to add one for when workout tab is clicked
+loadArchive();
