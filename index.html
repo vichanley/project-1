@@ -9,27 +9,20 @@
     <!-- tailwind js link -->
     <script src="./tailwind.config.js"></script>
     <!-- font awesome link -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
     />
     <!-- css link -->
-    <link rel="stylesheet" href="./assets/css/styles.css" />
-    <title>fitify</title>
+    <link rel="stylesheet" href="./assets/tailwind/output.css" />
+    <title>fitgainz</title>
   </head>
 
-  <body class="h-screen bg-gradient-to-r from-[color:var(--primary)] to-secondary">
+  <body class="h-screen bg-gradient-to-r from-[color:var(--primary)] to-secondary text-white">
     
     <main class="grid">
-      <!-- home page -->
-      <section class="row-span-3 ">
-        01
-      </section>
-
-      <!-- bottom navigation -->
-      <nav class="bg-white">
-        02  
-      </nav>
 
       <!-- workout tab -->
     <section id="workout-tab">
@@ -78,3 +71,19 @@
   <script src="./assets/js/script.js"></script>
   </body>
 </html>
+
+<!-- <main class="grid grid-rows-7 gap-1 h-screen bg-gradient-to-r from-[color:var(--primary)">
+  home page
+  <section class="row-span-6 grid grid-cols-7 gap-4 grid-rows-2 bg-gradient-to-r from-[color:var(--primary)] to-secondary">
+    <div class="col-start-2 col-span-5 bg-[#223C44] rounded-lg">1</div>
+    <div class="self-end h-1/3 col-start-2 col-span-5 bg-[#223C44] rounded-lg">2</div>
+  </section>
+
+  bottom navigation
+  <nav class="h-3/5 self-end row-end-8 container grid grid-cols-4 grid-rows-1 gap-4 bg-gradient-to-r from-[color:var(--primary)] to-secondary text-white text-4xl">
+    <button><i class="fas fa-carrot"></i></button>
+    <button><i class="fas fa-home"></i></button>
+    <button><i class="fas fa-list"></i></button>
+    <button><i class="fas fa-dumbbell"></i></button>
+  </nav>
+</main> -->
