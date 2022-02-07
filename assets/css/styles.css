@@ -3,6 +3,7 @@
     --secondary: #1B3137;
 }
 
+/* makes exercise collapsibles work */
 .collapsible {
   background-color: #777;
   color: white;
@@ -38,3 +39,4 @@
   transition: max-height 0.2s ease-out;
   background-color: #f1f1f1;
 }
+/* ^^^makes exercise collapsibles work */
