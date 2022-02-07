@@ -1,6 +1,9 @@
 :root {
-    --primary: #142429;
-    --secondary: #1B3137;
+  /* changed for my computer, hard to see -LY */
+  /* --primary: #142429;
+  --secondary: #1B3137; */
+  --primary: #4392aa;
+    --secondary: #35a5c4;
 }
 
 /* makes exercise collapsibles work */

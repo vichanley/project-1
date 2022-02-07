@@ -137,16 +137,12 @@ var loadIndMuscles = function () {
         bodyImage +
         "); width: 150px; height: 276px; background-size: 150px"
     );
-      
-
-
-
 
     muscleCard.appendChild(muscleName);
     muscleCard.appendChild(imageContainer);
     muscleList.appendChild(muscleCard);
     individualMusclesWrapperEl.appendChild(muscleList);
-    };
+  }
 };
 
 var loadExerciseList = function (muscleID) {
@@ -165,6 +161,105 @@ var loadExerciseList = function (muscleID) {
       });
     }
   });
+};
+
+var displayExerciseList = function (data) {
+  console.log(data);
+  console.log(muscleGroupArray);
+  muscleGroupWrapperEl.innerHTML = "";
+  exerciseListWrapperEl.innerHTML = "";
+  individualMusclesWrapperEl.innerHTML = "";
+
+  var muscleWorkoutTitle = document.createElement("h3");
+  muscleWorkoutTitle.textContent = "Select a Workout for Details";
+  exerciseListWrapperEl.appendChild(muscleWorkoutTitle);
+
+  for (var i = 0; i < data.results.length; i++) {
+    var indExerciseWrapper = document.createElement("div");
+    indExerciseWrapper.id = data.results[i].id;
+    indExerciseWrapper.classList = "individual-exercise";
+
+    var exerciseTitle = document.createElement("button");
+    exerciseTitle.id = "exercise-title";
+    exerciseTitle.classList = "collapsible";
+    exerciseTitle.textContent = data.results[i].name;
+
+    var exerciseDescription = document.createElement("div");
+    exerciseDescription.innerHTML = data.results[i].description;
+    exerciseDescription.classList = "content";
+
+    indExerciseWrapper.appendChild(exerciseTitle);
+    indExerciseWrapper.appendChild(exerciseDescription);
+    exerciseListWrapperEl.appendChild(indExerciseWrapper);
+  }
+
+  //function to make exercise collapsibles work
+  var coll = document.getElementsByClassName("collapsible");
+
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      console.log(content.innerHTML);
+      if (
+        content.innerHTML == "" ||
+        content.innerHTML == null ||
+        content.innerHTML == undefined
+      ) {
+        content.innerHTML = "<p>No Details Provided</p>";
+      }
+      if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  }
+
+  var returnBtn = document.createElement("button");
+  returnBtn.setAttribute("type", "button");
+  returnBtn.setAttribute("name", "returnbtn");
+  returnBtn.id = "returnbtn-exercise";
+  returnBtn.textContent = "Back";
+  exerciseListWrapperEl.appendChild(returnBtn);
+};
+
+var randomizeWorkout = function () {
+  //get information from dropdown
+  var chosenDay =
+    workoutDropdownEl.options[workoutDropdownEl.selectedIndex].value;
+  debugger;
+
+  if (chosenDay === "Arms") {
+    fetchArms();
+  } else if (chosenDay === "Legs") {
+    fetchLegs();
+  } else if (chosenDay === "Chest") {
+    fetchChest();
+  } else if (chosenDay === "Back") {
+    fetchBack();
+  } else if (chosenDay === "Core") {
+    fetchCore();
+  } else {
+    //TO DO: NEEDS TO BE A MODAL
+    alert("Please Select Muscle Group");
+  }
+};
+
+var displayRandomWorkout = function (data) {
+  //TO DO: randomize workouts
+  console.log(data);
+  muscleGroupWrapperEl.innerHTML = "";
+  exerciseListWrapperEl.innerHTML = "";
+  individualMusclesWrapperEl.innerHTML = "";
+  generateWorkoutWrapperEl.setAttribute("style", "display: none");
+
+  var returnBtn = document.createElement("button");
+  returnBtn.setAttribute("type", "button");
+  returnBtn.setAttribute("name", "returnbtn");
+  returnBtn.id = "returnbtn-random";
+  returnBtn.textContent = "Back";
+  individualMusclesWrapperEl.appendChild(returnBtn);
 };
 
 //ASYNC FETCH FUNCTIONS IN ORDER TO GET RANDOMIZED WORKOUTS FOR MUSCLE GROUPS
@@ -242,72 +337,6 @@ async function fetchCore() {
   ]);
   displayRandomWorkout(data);
 }
-
-var displayRandomWorkout = function (data) {
-  //TO DO: randomize workouts
-  console.log(data);
-  muscleGroupWrapperEl.innerHTML = "";
-  exerciseListWrapperEl.innerHTML = "";
-  individualMusclesWrapperEl.innerHTML = "";
-  generateWorkoutWrapperEl.setAttribute("style", "display: none");
-
-  var returnBtn = document.createElement("button");
-  returnBtn.setAttribute("type", "button");
-  returnBtn.setAttribute("name", "returnbtn");
-  returnBtn.id = "returnbtn-random";
-  returnBtn.textContent = "Back";
-  individualMusclesWrapperEl.appendChild(returnBtn);
-};
-
-var randomizeWorkout = function () {
-  //get information from dropdown
-  var chosenDay =
-    workoutDropdownEl.options[workoutDropdownEl.selectedIndex].value;
-  debugger;
-
-  if (chosenDay === "Arms") {
-    fetchArms();
-  } else if (chosenDay === "Legs") {
-    fetchLegs();
-  } else if (chosenDay === "Chest") {
-    fetchChest();
-  } else if (chosenDay === "Back") {
-    fetchBack();
-  } else if (chosenDay === "Core") {
-    fetchCore();
-  } else {
-    //TO DO: NEEDS TO BE A MODAL
-    alert("Please Select Muscle Group");
-  }
-};
-
-var displayExerciseList = function (data) {
-  //TO DO: add exercise detail, title
-  console.log(data);
-  console.log(muscleGroupArray);
-  muscleGroupWrapperEl.innerHTML = "";
-  exerciseListWrapperEl.innerHTML = "";
-  individualMusclesWrapperEl.innerHTML = "";
-
-  for (var i = 0; i < data.results.length; i++) {
-    var indExerciseWrapper = document.createElement("div");
-    indExerciseWrapper.id = data.results[i].id;
-
-    var exerciseTitle = document.createElement("h2");
-    exerciseTitle.id = "exercise-title";
-    exerciseTitle.textContent = data.results[i].name;
-
-    indExerciseWrapper.appendChild(exerciseTitle);
-    exerciseListWrapperEl.appendChild(indExerciseWrapper);
-  }
-
-  var returnBtn = document.createElement("button");
-  returnBtn.setAttribute("type", "button");
-  returnBtn.setAttribute("name", "returnbtn");
-  returnBtn.id = "returnbtn-exercise";
-  returnBtn.textContent = "Back";
-  exerciseListWrapperEl.appendChild(returnBtn);
-};
 
 //EVENT LISTENERS
 //TO DO: need to add one for when workout tab is clicked to call loadArchive
