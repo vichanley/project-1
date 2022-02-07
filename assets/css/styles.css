@@ -1,4 +1,34 @@
 :root {
     --primary: #142429;
-    --secondary: #1B3137;
+    --secondary: #294851;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+}
+
+/* NAVIGATION STYLES START */
+.btn-hover:hover {
+    color: #223C44;
+    background-color: #69A4B5;
+    transition: all 0.6s ease-in-out;
+}
+
+.btn-hover:not(:hover) {
+    color: white;
+    background-color: var(--secondary);
+    transition: all 0.8s ease-in-out;
+}
+/* NAVIGATION STYLES END */
+
+/* WORKOUT TAB STYLES */
+/* drop down styles */
+select {
+    background-image: none;
+    padding: 10px 40px;
+    text-align: center;
+}
+
+select:hover {
+    border: 5px solid #69A4B5;
 }

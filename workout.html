@@ -11,6 +11,8 @@
     <script src="./tailwind.config.js"></script>
     <!-- font awesome link --> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"/>
+    <!-- google fonts link -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500&amp;family=Poppins:wght@100;200;300;400&amp;display=swap" rel="stylesheet">
     <!-- css link -->
     <link rel="stylesheet" href="./assets/css/styles.css" />
 
@@ -28,8 +30,9 @@
 
     <main class="min-h-screen flex flex-col">
 
+      <!-- WORKOUT PAGE MAIN -->
       <!-- body days section -->
-      <section class="flex flex-grow  justify-center mx-12 my-12 h-24 bg-[#223C44] rounded-[20px]">
+      <section class="flex flex-grow justify-center mx-12 my-10 h-24 bg-secondary rounded-[20px]">
         <div>
           Your Workout
         </div>
@@ -43,33 +46,43 @@
       </section>
 
       <!-- generate workout section -->
-      <section class="mx-12 mb-12 h-20 border-2 border-white rounded-[26px] text-sm text-center text-white">
+      <section class="mx-12 mb-10 rounded-[26px] text-sm text-center">
+
+        <!-- drop down -->
+        <div class="mb-4">
+          <select id="day-select" class="w-5/6 rounded-[26px] text-[#142429]">
+            <option value="">Select a Training Day</option>
+            <option value="arm">Arms</option>
+            <option value="legs">Legs</option>
+            <option value="chest">Chest</option>
+            <option value="back">Back</option>
+            <option value="core">Core</option>
+          </select>
+        </div>
 
         <!-- generate workout button -->
-        <button class="btn bg-[#223C44]">Generate Workout</button>
+        <button class="btn-hover p-3 btn bg-secondary rounded-[26px] font-semibold">Generate Workout</button>
 
       </section>
-
+      <!-- WORKOUT PAGE MAIN -->
       
-
-
 
       
       <!-- Navigation Section -->
-      <nav class="flex justify-around bg-[#223C44] text-center text-white text-4xl">
-        <button class="hover:bg-[#365F6D] w-16 h-16 rounded-full">
+      <nav class="flex justify-around bg-secondary text-center text-4xl">
+        <button class="btn-hover w-16 h-16 rounded-full">
           <i class="fas fa-carrot"></i>
         </button>
 
-        <button class="hover:bg-[#365F6D] w-16 h-16 rounded-full">
+        <button class="btn-hover w-16 h-16 rounded-full">
           <i class="fas fa-home"></i>
         </button>
 
-        <button class="hover:bg-[#365F6D] w-16 h-16 rounded-full">
+        <button class="btn-hover w-16 h-16 rounded-full">
           <i class="fas fa-list"></i>
         </button>
 
-        <button class="hover:bg-[#365F6D] w-16 h-16 rounded-full">
+        <button class="btn-hover w-16 h-16 rounded-full">
           <i class="fas fa-dumbbell"></i>
         </button>
       </nav>
