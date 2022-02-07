@@ -1,7 +1,7 @@
 //VARIABLES
 //workout tab variables
 const workoutTabEl = document.getElementById("workout-tab");
-const workoutTabTitleEl = document.getElementById("workout-tab-title");
+//const workoutTabTitleEl = document.getElementById("workout-tab-title");
 const workoutTabBtnsWrapper = document.getElementById("workout-tab-btns");
 const generateWorkoutBtn = document.getElementById("generate-workout-btn");
 const archiveWrapperEl = document.getElementById("archive-wrapper");
@@ -12,15 +12,17 @@ const exerciseListWrapperEl = document.getElementById("exercise-wrapper");
 const individualMusclesWrapperEl = document.getElementById("individual-muscle-wrapper");
 var muscleGroupArray = [];
 const muscleGroup = ["Arms", "Legs", "Chest", "Back", "Core"];
+var muscleGroupCardArray = [];
 
 
 //FUNCTIONS
 var reset = function () { 
-  muscleGroupArray=[];
+  muscleGroupArray = [];
 };
 
 var loadArchive = function () {
-  workoutTabTitleEl.textContent = "Select a Day to View Muscles";
+  //workoutTabTitleEl.textContent = "Select a Day to View Muscles";
+  generateWorkoutWrapperEl.removeAttribute("style");
 
   reset();
   var muscleApi = "https://wger.de/api/v2/muscle/?format=json";
@@ -30,7 +32,8 @@ var loadArchive = function () {
   .then(function (response) {
       if (response.ok) {
       response.json().then(function (data) {
-          muscleGroupCards(data);
+        muscleGroupCards(data);
+        muscleGroupCardArray.push(data);
           console.log(data);
       });
       } else {
@@ -47,6 +50,7 @@ function muscleGroupCards(data) {
   muscleGroupWrapperEl.innerHTML = "";
   exerciseListWrapperEl.innerHTML = "";
   individualMusclesWrapperEl.innerHTML = "";
+  generateWorkoutWrapperEl.removeAttribute("style");
   reset();
 
   for (i = 0; i < muscleGroup.length; i++) {
@@ -68,102 +72,31 @@ function muscleGroupCards(data) {
         ".svg); background-repeat: no-repeat; width: 150px; height: 100px; background-size: 110px"
     );
 
-    bodyCard.append(bodyCardName, bodyImageContainer);
+    var moreInfoBtn = document.createElement("div");
+    moreInfoBtn.id = muscleGroup[i] + "-info";
+    moreInfoBtn.setAttribute("style", "background-image: url(./assets/images/info-icon.svg);width: 20px; height: 20px; background-size: 20px");
+
+    bodyCard.append(bodyCardName, bodyImageContainer, moreInfoBtn);
     muscleGroupWrapperEl.appendChild(bodyCard);
     archiveWrapperEl.appendChild(muscleGroupWrapperEl);
   };
-
-
-  //add dropdown list to select muscle group to generate random workout
-
-
-
-
-
-  //add event listeners for muscle group cards. 
-  //will return error when user has gone group card -> ind muscle -> back to group cards -> other group card(because group cards are not present in html).this does not break the functionality
-  muscleGroupWrapperEl.addEventListener("click", (event) => {
-    if (event.target.id === "Arms-image") {
-      console.log("ARM CLICK");
-      for (var i = 0; i < data.results.length; i++) {
-        var muscle = data.results[i];
-
-        if (
-          muscle.id == 2 ||
-          muscle.id == 1 ||
-          muscle.id == 13 ||
-          muscle.id == 5
-        ) {
-          muscleGroupArray.push(muscle);
-          loadIndMuscles(muscleGroupArray);
-        }
-      }
-    } else if (event.target.id === "Legs-image") {
-      console.log("LEG CLICK");
-      for (var i = 0; i < data.results.length; i++) {
-        var muscle = data.results[i];
-
-        if (
-          muscle.id == 11 ||
-          muscle.id == 7 ||
-          muscle.id == 8 ||
-          muscle.id == 10 ||
-          muscle.id == 15
-        ) {
-          muscleGroupArray.push(muscle);
-          loadIndMuscles(muscleGroupArray);
-        }
-      }
-    } else if (event.target.id === "Chest-image") {
-      console.log("CHEST CLICK");
-      for (var i = 0; i < data.results.length; i++) {
-        var muscle = data.results[i];
-
-        if (muscle.id == 4) {
-          muscleGroupArray.push(muscle);
-          loadIndMuscles(muscleGroupArray);
-        }
-      }
-    } else if (event.target.id === "Back-image") {
-      console.log("BACK CLICK");
-      for (var i = 0; i < data.results.length; i++) {
-        var muscle = data.results[i];
-
-        if (muscle.id == 12 || muscle.id == 9) {
-          muscleGroupArray.push(muscle);
-          loadIndMuscles(muscleGroupArray);
-        }
-      }
-    } else if (event.target.id === "Core-image") {
-      console.log("CORE CLICK");
-      for (var i = 0; i < data.results.length; i++) {
-        var muscle = data.results[i];
-
-        if (muscle.id == 14 || muscle.id == 6 || muscle.id == 3) {
-          muscleGroupArray.push(muscle);
-          loadIndMuscles(muscleGroupArray);
-        }
-      }
-    }
-  });
 };
 
-var loadIndMuscles = function (muscleGroupArray) {
-  workoutTabTitleEl.textContent = "Select Individual Muscle to Display Details";
+var loadIndMuscles = function () {
+  //workoutTabTitleEl.textContent = "Select Individual Muscle to Display Details";
   muscleGroupWrapperEl.innerHTML = "";
   exerciseListWrapperEl.innerHTML = "";
   individualMusclesWrapperEl.innerHTML = "";
+  generateWorkoutWrapperEl.setAttribute("style", "display: none");
   var muscleList = document.createElement("div");
   muscleList.id = "muscles";
 
   var returnBtn = document.createElement("button");
   returnBtn.setAttribute("type", "button");
   returnBtn.setAttribute("name", "returnbtn");
-  returnBtn.id = "returnbtn";
+  returnBtn.id = "returnbtn-ind-muscles";
   returnBtn.textContent = "Back";
   individualMusclesWrapperEl.appendChild(returnBtn);
-
-  returnBtn.addEventListener("click", muscleGroupCards)
 
   //loop through array to generate individual muscle cards
   for (var i = 0; i < muscleGroupArray.length; i++) {
@@ -174,7 +107,6 @@ var loadIndMuscles = function (muscleGroupArray) {
     muscleCard.setAttribute("data-muscleID", muscleGroupArray[i].id);
 
     var muscleName = document.createElement("h2");
-    muscleName.id = "muscle-name";
     muscleName.textContent = muscleGroupArray[i].name;
 
     //checks if the background body should be front or back view
@@ -191,6 +123,7 @@ var loadIndMuscles = function (muscleGroupArray) {
 
     var imageContainer = document.createElement("div");
     imageContainer.id = muscleGroupArray[i].id;
+    imageContainer.classList = "muscle-image"
     imageContainer.setAttribute(
       "style",
       "background-image: url(https://wger.de" +
@@ -204,14 +137,9 @@ var loadIndMuscles = function (muscleGroupArray) {
     muscleCard.appendChild(imageContainer);
     muscleList.appendChild(muscleCard);
     individualMusclesWrapperEl.appendChild(muscleList);
+
+
   };
-
-  //add event delegation listeners for ind muscles to push to fetch 
-  muscleList.addEventListener("click", function (event) {
-    var muscleID = event.target.id;
-
-    loadExerciseList(muscleID);
-  });
 };
 
 var loadExerciseList = function (muscleID) {
@@ -233,8 +161,9 @@ var loadExerciseList = function (muscleID) {
   });
 };
 
+//ASYNC FETCH FUNCTIONS IN ORDER TO GET RANDOMIZED WORKOUTS FOR MUSCLE GROUPS
 async function fetchArms() {
-  var armData = await Promise.all([
+  var data = await Promise.all([
     fetch(
       "https://wger.de/api/v2/exercise/?muscles=2&language=2&format=json"
     ).then((response) => response.json()),
@@ -246,26 +175,104 @@ async function fetchArms() {
     ).then((response) => response.json()),
     fetch(
       "https://wger.de/api/v2/exercise/?muscles=5&language=2&format=json"
-    ).then((response) => response.json()),
+    ).then((response) => response.json())
   ]);
-  console.log(armData);
-}
+  displayRandomWorkout(data);
+};
+
+async function fetchLegs() {
+  var data = await Promise.all([
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=11&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=7&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=8&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=10&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=15&language=2&format=json"
+    ).then((response) => response.json())
+  ]);
+  displayRandomWorkout(data);
+};
+
+async function fetchChest() {
+  var data = await Promise.all([
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=4&language=2&format=json"
+    ).then((response) => response.json())
+  ]);
+  displayRandomWorkout(data);
+};
+
+async function fetchBack() {
+  var data = await Promise.all([
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=12&language=2&format=json"
+      ).then((response) => response.json()),
+      fetch(
+      "https://wger.de/api/v2/exercise/?muscles=9&language=2&format=json"
+      ).then((response) => response.json())
+    ]);
+    displayRandomWorkout(data);
+};
+  
+async function fetchCore() {
+  var data = await Promise.all([
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=14&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=6&language=2&format=json"
+    ).then((response) => response.json()),
+    fetch(
+      "https://wger.de/api/v2/exercise/?muscles=3&language=2&format=json"
+    ).then((response) => response.json())
+  ]);
+  displayRandomWorkout(data);
+};
+
+var displayRandomWorkout = function (data) {
+   muscleGroupWrapperEl.innerHTML = "";
+   exerciseListWrapperEl.innerHTML = "";
+  individualMusclesWrapperEl.innerHTML = "";
+  generateWorkoutWrapperEl.setAttribute("style", "display: none");
+  console.log(data);
+
+    var returnBtn = document.createElement("button");
+    returnBtn.setAttribute("type", "button");
+    returnBtn.setAttribute("name", "returnbtn");
+    returnBtn.id = "returnbtn-random";
+    returnBtn.textContent = "Back";
+    individualMusclesWrapperEl.appendChild(returnBtn);
+
+    //returnBtn.addEventListener("click", muscleGroupCards);
+};
 
 var randomizeWorkout = function () {
-  console.log("Random Workout");
-  
-  
   var chosenDay =
     workoutDropdownEl.options[workoutDropdownEl.selectedIndex].value;
-  console.log(chosenDay)
 
   if (chosenDay === "Arms") {
-    console.log("arms")
-
     fetchArms();
-    
+  } else if (chosenDay === "Legs") {
+    fetchLegs();
+  } else if (chosenDay === "Chest") {
+    fetchChest();
+  } else if (chosenDay === "Back") {
+    fetchBack();
+  } else if (chosenDay === "Core") {
+    fetchCore();
+  } else {
+    //NEEDS TO BE A MODAL
+    alert("Please Select Muscle Group");
   }
-}
+};
 
 
 
@@ -273,17 +280,18 @@ var displayExerciseList = function (data) {
   muscleGroupWrapperEl.innerHTML = "";
   exerciseListWrapperEl.innerHTML = "";
   individualMusclesWrapperEl.innerHTML = "";
+
   for (var i = 0; i < data.results.length; i++) {
     var indExerciseWrapper = document.createElement("div");
     indExerciseWrapper.id = data.results[i].id;
-    
+
     var exerciseTitle = document.createElement("h2");
     exerciseTitle.id = "exercise-title";
     exerciseTitle.textContent = data.results[i].name;
-  
+
     indExerciseWrapper.appendChild(exerciseTitle);
     exerciseListWrapperEl.appendChild(indExerciseWrapper);
-  };
+  }
 
   var returnBtn = document.createElement("button");
   returnBtn.setAttribute("type", "button");
@@ -292,12 +300,95 @@ var displayExerciseList = function (data) {
   returnBtn.textContent = "Back";
   exerciseListWrapperEl.appendChild(returnBtn);
 
-  returnBtn.addEventListener("click", loadIndMuscles);
+  // returnBtn.addEventListener("click", loadIndMuscles);
+  debugger;
+  console.log(muscleGroupArray);
 };
 
 
 //EVENT LISTENERS
 //need to add one for when workout tab is clicked to call loadArchive
 generateWorkoutBtn.addEventListener("click", randomizeWorkout);
+//returnBtn.addEventListener("click", loadIndMuscles);
+//document.querySelector(".")
+//returnBtn.addEventListener("click", muscleGroupCards);
+document.querySelector("#archive-wrapper").addEventListener("click", function (event) {
+  if (event.target.matches("#returnbtn-ind-muscles") || event.target.matches("#returnbtn-random")) {
+    muscleGroupCards();
+  }
+});
+document.querySelector("#archive-wrapper").addEventListener("click", function (event) {
+    //console.log(event)
+    if (event.target.matches(".muscle-image")) {
+      console.log("working");
+      var muscleID = event.target.id;
+      loadExerciseList(muscleID);
+    }
+}); 
+document.querySelector("#archive-wrapper").addEventListener("click", function (event) {
+   if (event.target.id === "Arms-info") {
+     console.log("ARM CLICK");
+     console.log(muscleGroupCardArray[0]);
+     for (var i = 0; i < muscleGroupCardArray[0].results.length; i++) {
+       var muscle = muscleGroupCardArray[0].results[i];
+
+       if (
+         muscle.id == 2 ||
+         muscle.id == 1 ||
+         muscle.id == 13 ||
+         muscle.id == 5
+       ) {
+         muscleGroupArray.push(muscle);
+         loadIndMuscles(muscleGroupArray);
+       }
+     }
+   } else if (event.target.id === "Legs-info") {
+     console.log("LEG CLICK");
+     for (var i = 0; i < muscleGroupCardArray[0].results.length; i++) {
+       var muscle = muscleGroupCardArray[0].results[i];
+
+       if (
+         muscle.id == 11 ||
+         muscle.id == 7 ||
+         muscle.id == 8 ||
+         muscle.id == 10 ||
+         muscle.id == 15
+       ) {
+         muscleGroupArray.push(muscle);
+         loadIndMuscles(muscleGroupArray);
+       }
+     }
+   } else if (event.target.id === "Chest-info") {
+     console.log("CHEST CLICK");
+     for (var i = 0; i < muscleGroupCardArray[0].results.length; i++) {
+       var muscle = muscleGroupCardArray[0].results[i];
+
+       if (muscle.id == 4) {
+         muscleGroupArray.push(muscle);
+         loadIndMuscles(muscleGroupArray);
+       }
+     }
+   } else if (event.target.id === "Back-info") {
+     console.log("BACK CLICK");
+     for (var i = 0; i < muscleGroupCardArray[0].results.length; i++) {
+       var muscle = muscleGroupCardArray[0].results[i];
+
+       if (muscle.id == 12 || muscle.id == 9) {
+         muscleGroupArray.push(muscle);
+         loadIndMuscles(muscleGroupArray);
+       }
+     }
+   } else if (event.target.id === "Core-info") {
+     console.log("CORE CLICK");
+     for (var i = 0; i < muscleGroupCardArray[0].results.length; i++) {
+       var muscle = muscleGroupCardArray[0].results[i];
+
+       if (muscle.id == 14 || muscle.id == 6 || muscle.id == 3) {
+         muscleGroupArray.push(muscle);
+         loadIndMuscles(muscleGroupArray);
+       }
+     }
+   }
+ });
 
 loadArchive();
