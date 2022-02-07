@@ -15,6 +15,9 @@ const individualMusclesWrapperEl = document.getElementById(
 var muscleGroupArray = [];
 const muscleGroup = ["Arms", "Legs", "Chest", "Back", "Core"];
 var muscleGroupCardArray = [];
+var randomWorkoutArray = [];
+var finalRandomArray = [];
+
 
 //FUNCTIONS
 var reset = function () {
@@ -228,7 +231,6 @@ var randomizeWorkout = function () {
   //get information from dropdown
   var chosenDay =
     workoutDropdownEl.options[workoutDropdownEl.selectedIndex].value;
-  debugger;
 
   if (chosenDay === "Arms") {
     fetchArms();
@@ -249,10 +251,97 @@ var randomizeWorkout = function () {
 var displayRandomWorkout = function (data) {
   //TO DO: randomize workouts
   console.log(data);
+  //clear values
+  randomWorkoutArray = [];
+  finalRandomArray = [];
   muscleGroupWrapperEl.innerHTML = "";
   exerciseListWrapperEl.innerHTML = "";
   individualMusclesWrapperEl.innerHTML = "";
   generateWorkoutWrapperEl.setAttribute("style", "display: none");
+
+  //pushes each array of workout results into one array
+  for (var i = 0; i < data.length; i++) {
+    var exercises = data[i].results;
+    randomWorkoutArray.push(exercises);
+  }
+  //simplifies array so that it contains only the objects of the multiple arrays
+  const simplifyArray = (randomWorkoutArray = []) => {
+    const res = [];
+    randomWorkoutArray.forEach((element) => {
+      element.forEach((el) => {
+        res.push(el);
+      });
+    });
+    //return res;
+    console.log(res);
+    debugger;
+    for (var i = 0; i < res.length; i++) {
+      var randomItem = res[Math.floor(Math.random() * res.length)];
+      //variable to check if items are already in the array before pushing
+      var check = finalRandomArray.includes(randomItem);
+
+      if (check === false) {
+        finalRandomArray.push(randomItem);
+      } else {
+        while (check === true) {
+          randomItem = res[Math.floor(Math.random() * res.length)];
+          check = finalRandomArray.includes(randomItem);
+          if (check === false) {
+            finalRandomArray.push(randomItem);
+          }
+        }
+      }
+    }
+  };
+  simplifyArray(randomWorkoutArray);
+  console.log(finalRandomArray);
+
+  //cut finalRandomArray to only first 6 exercises
+  finalRandomArray = finalRandomArray.splice(0, 6);
+
+  //loop through created array to generate exercise list
+  for (var i = 0; i < finalRandomArray.length; i++) {
+    var exerciseCard = document.createElement("div");
+    exerciseCard.id = "exercise-card";
+    //sets exerciseID to be the same as in the api
+    exerciseCard.setAttribute("data-exerciseID", finalRandomArray[i].id);
+
+    var exerciseName = document.createElement("h2");
+    exerciseName.id = "exercise-name";
+    exerciseName.innerHTML = finalRandomArray[i].name;
+    exerciseName.classList = "collapsible";
+    
+    var exerciseDescription = document.createElement("div");
+    exerciseDescription.innerHTML = finalRandomArray[i].description;
+    exerciseDescription.classList = "content";
+    
+    exerciseCard.appendChild(exerciseName);
+    exerciseCard.appendChild(exerciseDescription);
+    exerciseListWrapperEl.appendChild(exerciseCard);
+  }
+
+  //function to make exercise collapsibles work
+  var coll = document.getElementsByClassName("collapsible");
+
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      console.log(content.innerHTML);
+      if (
+        content.innerHTML == "" ||
+        content.innerHTML == null ||
+        content.innerHTML == undefined
+      ) {
+        content.innerHTML = "<p>No Details Provided</p>";
+      }
+      if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  }
 
   var returnBtn = document.createElement("button");
   returnBtn.setAttribute("type", "button");
