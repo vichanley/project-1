@@ -44,9 +44,38 @@
 
       <!-- generate workout section -->
       <section class="mx-12 mb-12 h-20 border-2 border-white rounded-[26px] text-sm text-center text-white">
-
-        <!-- generate workout button -->
-        <button class="btn bg-[#223C44]">Generate Workout</button>
+        <!-- workout tab -->
+        <section id="workout-tab">
+            <article id="archive-wrapper">
+                <div id="muscle-group-wrapper">
+                    <!-- dynamically generate inside here -->
+                </div>
+        
+                <div id="individual-muscle-wrapper">
+                    <!-- dynamically generate inside here -->
+                </div>
+        
+                <div id="exercise-wrapper">
+                    <!-- dynamically generate inside here -->
+                </div>
+            </article>
+        
+            <form id="generate-workout-wrapper">
+                <!-- couldn't dynamically generate -->
+                <select id="workout-list">
+                    <option>---Choose A Day---</option>
+                    <option>Arms</option>
+                    <option>Legs</option>
+                    <option>Chest</option>
+                    <option>Back</option>
+                    <option>Core</option>
+                </select>
+        
+                <button type="button" class="btn bg-[#223C44]" id="generate-workout-btn">
+                    Generate Workout
+                </button>
+            </form>
+        </section>
 
       </section>
 
