@@ -1,19 +1,19 @@
 //VARIABLES
 //workout tab variables
 const workoutTabEl = document.getElementById("workout-tab");
-const generateWorkoutBtn = document.getElementById("generate-workout-btn");
 const archiveWrapperEl = document.getElementById("archive-wrapper");
-const generateWorkoutWrapperEl = document.getElementById(
-  "generate-workout-wrapper"
-);
-const workoutDropdownEl = document.getElementById("workout-list");
 const muscleGroupWrapperEl = document.getElementById("muscle-group-wrapper");
-const exerciseListWrapperEl = document.getElementById("exercise-wrapper");
 const individualMusclesWrapperEl = document.getElementById(
   "individual-muscle-wrapper"
 );
-var muscleGroupArray = [];
+const exerciseListWrapperEl = document.getElementById("exercise-wrapper");
+const generateWorkoutWrapperEl = document.getElementById(
+  "generate-workout-wrapper"
+);
+const generateWorkoutBtn = document.getElementById("generate-workout-btn");
+const workoutDropdownEl = document.getElementById("workout-list");
 const muscleGroup = ["Arms", "Legs", "Chest", "Back", "Core"];
+var muscleGroupArray = [];
 var muscleGroupCardArray = [];
 var randomWorkoutArray = [];
 var finalRandomArray = [];
@@ -24,9 +24,11 @@ var reset = function () {
   muscleGroupArray = [];
 };
 
+//load workout tab
 var loadArchive = function () {
   //clear values
   generateWorkoutWrapperEl.removeAttribute("style");
+
   reset();
 
   var muscleApi = "https://wger.de/api/v2/muscle/?format=json";
@@ -36,6 +38,7 @@ var loadArchive = function () {
     .then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
+          //saves initial muscle data as a global variable
           muscleGroupCardArray.push(data);
           muscleGroupCards(data);
         });
@@ -55,21 +58,23 @@ function muscleGroupCards() {
   exerciseListWrapperEl.innerHTML = "";
   individualMusclesWrapperEl.innerHTML = "";
   generateWorkoutWrapperEl.removeAttribute("style");
+
   reset();
 
+  //loop through array to generate muscle group cards
   for (i = 0; i < muscleGroup.length; i++) {
-    var bodyCard = document.createElement("div");
-    bodyCard.id = "muscle-card";
-    bodyCard.classList = "muscle-card";
-    bodyCard.id = muscleGroup[i] + "-group";
+    var muscleGroupCard = document.createElement("div");
+    muscleGroupCard.id = "muscle-card";
+    muscleGroupCard.classList = "muscle-card";
+    muscleGroupCard.id = muscleGroup[i] + "-group";
 
-    var bodyCardName = document.createElement("h2");
-    bodyCardName.classList = "card-title";
-    bodyCardName.textContent = muscleGroup[i];
+    var muscleGroupCardName = document.createElement("h2");
+    muscleGroupCardName.classList = "card-title";
+    muscleGroupCardName.textContent = muscleGroup[i];
 
-    var bodyImageContainer = document.createElement("div");
-    bodyImageContainer.id = muscleGroup[i] + "-image";
-    bodyImageContainer.setAttribute(
+    var muscleGroupImageContainer = document.createElement("div");
+    muscleGroupImageContainer.id = muscleGroup[i] + "-image";
+    muscleGroupImageContainer.setAttribute(
       "style",
       "background-image: url(./assets/images/" +
         muscleGroup[i] +
@@ -83,8 +88,8 @@ function muscleGroupCards() {
       "background-image: url(./assets/images/info-icon.svg);width: 20px; height: 20px; background-size: 20px"
     );
 
-    bodyCard.append(bodyCardName, bodyImageContainer, moreInfoBtn);
-    muscleGroupWrapperEl.appendChild(bodyCard);
+    muscleGroupCard.append(muscleGroupCardName, muscleGroupImageContainer, moreInfoBtn);
+    muscleGroupWrapperEl.appendChild(muscleGroupCard);
     archiveWrapperEl.appendChild(muscleGroupWrapperEl);
   }
 }
@@ -349,6 +354,20 @@ var displayRandomWorkout = function (data) {
   returnBtn.id = "returnbtn-random";
   returnBtn.textContent = "Back";
   individualMusclesWrapperEl.appendChild(returnBtn);
+  
+  var favoriteBtn = document.createElement("button");
+  favoriteBtn.setAttribute("type", "button");
+  favoriteBtn.setAttribute("name", "favoriteBtn");
+  favoriteBtn.id = "favoriteBtn-random";
+  favoriteBtn.textContent = "Save Workout";
+  individualMusclesWrapperEl.appendChild(favoriteBtn);
+  
+  var makeCurrentWorkoutBtn = document.createElement("button");
+  makeCurrentWorkoutBtn.setAttribute("type", "button");
+  makeCurrentWorkoutBtn.setAttribute("name", "makeCurrentWorkoutBtn");
+  makeCurrentWorkoutBtn.id = "makeCurrentWorkoutBtn-random";
+  makeCurrentWorkoutBtn.textContent = "Make Current Workout";
+  individualMusclesWrapperEl.appendChild(makeCurrentWorkoutBtn);
 };
 
 //ASYNC FETCH FUNCTIONS IN ORDER TO GET RANDOMIZED WORKOUTS FOR MUSCLE GROUPS
@@ -425,10 +444,10 @@ async function fetchCore() {
     ).then((response) => response.json()),
   ]);
   displayRandomWorkout(data);
-}
+};
 
 //EVENT LISTENERS
-//TO DO: need to add one for when workout tab is clicked to call loadArchive
+//TO DO: need to add one for when workout tab is clicked to call loadArchive. add listener for when favoriteBtn is pressed (also function to save to localStorage). add listener for when makeCurrentWorkoutBtn is pressed (also function to push to home page)
 generateWorkoutBtn.addEventListener("click", randomizeWorkout);
 //listeners for dynamically generated elements
 document
