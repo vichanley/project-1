@@ -46,7 +46,7 @@ var loadArchive = function () {
 };
 
 //generate muscle group cards
-function muscleGroupCards(data) {
+function muscleGroupCards() {
   muscleGroupWrapperEl.innerHTML = "";
   exerciseListWrapperEl.innerHTML = "";
   individualMusclesWrapperEl.innerHTML = "";
@@ -137,9 +137,9 @@ var loadIndMuscles = function () {
     muscleCard.appendChild(imageContainer);
     muscleList.appendChild(muscleCard);
     individualMusclesWrapperEl.appendChild(muscleList);
-
-
   };
+  console.log(muscleGroupArray);
+
 };
 
 var loadExerciseList = function (muscleID) {
@@ -250,8 +250,6 @@ var displayRandomWorkout = function (data) {
     returnBtn.id = "returnbtn-random";
     returnBtn.textContent = "Back";
     individualMusclesWrapperEl.appendChild(returnBtn);
-
-    //returnBtn.addEventListener("click", muscleGroupCards);
 };
 
 var randomizeWorkout = function () {
@@ -296,25 +294,26 @@ var displayExerciseList = function (data) {
   var returnBtn = document.createElement("button");
   returnBtn.setAttribute("type", "button");
   returnBtn.setAttribute("name", "returnbtn");
-  returnBtn.id = "returnbtn";
+  returnBtn.id = "returnbtn-exercise";
   returnBtn.textContent = "Back";
   exerciseListWrapperEl.appendChild(returnBtn);
 
-  // returnBtn.addEventListener("click", loadIndMuscles);
-  debugger;
-  console.log(muscleGroupArray);
+  
 };
 
 
 //EVENT LISTENERS
 //need to add one for when workout tab is clicked to call loadArchive
 generateWorkoutBtn.addEventListener("click", randomizeWorkout);
-//returnBtn.addEventListener("click", loadIndMuscles);
-//document.querySelector(".")
-//returnBtn.addEventListener("click", muscleGroupCards);
+//listeners for dynamically generated elements
 document.querySelector("#archive-wrapper").addEventListener("click", function (event) {
   if (event.target.matches("#returnbtn-ind-muscles") || event.target.matches("#returnbtn-random")) {
-    muscleGroupCards();
+    muscleGroupCards(muscleGroupCardArray);
+  }
+});
+document.querySelector("#archive-wrapper").addEventListener("click", function (event) {
+  if (event.target.matches("#returnbtn-exercise")) {
+    loadIndMuscles();
   }
 });
 document.querySelector("#archive-wrapper").addEventListener("click", function (event) {
@@ -326,7 +325,7 @@ document.querySelector("#archive-wrapper").addEventListener("click", function (e
     }
 }); 
 document.querySelector("#archive-wrapper").addEventListener("click", function (event) {
-   if (event.target.id === "Arms-info") {
+  if (event.target.id === "Arms-info") {
      console.log("ARM CLICK");
      console.log(muscleGroupCardArray[0]);
      for (var i = 0; i < muscleGroupCardArray[0].results.length; i++) {
@@ -339,8 +338,8 @@ document.querySelector("#archive-wrapper").addEventListener("click", function (e
          muscle.id == 5
        ) {
          muscleGroupArray.push(muscle);
-         loadIndMuscles(muscleGroupArray);
        }
+       loadIndMuscles(muscleGroupArray);
      }
    } else if (event.target.id === "Legs-info") {
      console.log("LEG CLICK");
@@ -355,8 +354,8 @@ document.querySelector("#archive-wrapper").addEventListener("click", function (e
          muscle.id == 15
        ) {
          muscleGroupArray.push(muscle);
-         loadIndMuscles(muscleGroupArray);
        }
+       loadIndMuscles(muscleGroupArray);
      }
    } else if (event.target.id === "Chest-info") {
      console.log("CHEST CLICK");
@@ -365,8 +364,8 @@ document.querySelector("#archive-wrapper").addEventListener("click", function (e
 
        if (muscle.id == 4) {
          muscleGroupArray.push(muscle);
-         loadIndMuscles(muscleGroupArray);
        }
+       loadIndMuscles(muscleGroupArray);
      }
    } else if (event.target.id === "Back-info") {
      console.log("BACK CLICK");
@@ -375,8 +374,8 @@ document.querySelector("#archive-wrapper").addEventListener("click", function (e
 
        if (muscle.id == 12 || muscle.id == 9) {
          muscleGroupArray.push(muscle);
-         loadIndMuscles(muscleGroupArray);
        }
+       loadIndMuscles(muscleGroupArray);
      }
    } else if (event.target.id === "Core-info") {
      console.log("CORE CLICK");
@@ -385,10 +384,10 @@ document.querySelector("#archive-wrapper").addEventListener("click", function (e
 
        if (muscle.id == 14 || muscle.id == 6 || muscle.id == 3) {
          muscleGroupArray.push(muscle);
-         loadIndMuscles(muscleGroupArray);
        }
+       loadIndMuscles(muscleGroupArray);
      }
-   }
+  }
  });
 
 loadArchive();
