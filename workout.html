@@ -21,28 +21,25 @@
 
   <body class="bg-gradient-to-r from-[#142429] to-[#1B3137] text-white">
     
-
-
-    <!-- jQuery link -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous" ></script>
-    <!-- js link -->
-    <script src="./assets/js/workout.js"></script>
-
     <main class="min-h-screen flex flex-col">
 
       <!-- WORKOUT PAGE MAIN -->
       <!-- body days section -->
-      <section class="flex flex-grow justify-center mx-12 my-10 h-24 bg-secondary rounded-[20px]">
-        <div>
-          Your Workout
-        </div>
-        <div>
-          <ul>
-            <li>
-              
-            </li>
-          </ul>
-        </div>
+      <section id="workout-tab" class="flex flex-grow justify-center mx-12 my-10 h-24 bg-secondary rounded-[20px]">
+        <article id="archive-wrapper">
+          <div id="muscle-group-wrapper">
+              <!-- dynamically generate inside here -->
+          </div>
+
+          <div id="individual-muscle-wrapper">
+            <!-- dynamically generate inside here -->
+          </div>
+
+          <div id="exercise-wrapper">
+            <!-- dynamically generate inside here -->
+          </div>
+      </article>
+
       </section>
 
       <!-- generate workout section -->
@@ -88,8 +85,10 @@
       </nav>
     </main>
 
-
-
-
+    <!-- jQuery link -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- js link -->
+    <!-- <script src="./assets/js/workout.js"></script> -->
   </body>
 </html>

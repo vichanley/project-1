@@ -1,3 +1,4 @@
+/* UNIVERSAL STYLES START */
 :root {
     --primary: #142429;
     --secondary: #294851;
@@ -5,7 +6,11 @@
 
 body {
     font-family: "Montserrat", sans-serif;
+    color: white;
 }
+/* UNIVERSAL STYLES END */
+
+
 
 /* NAVIGATION STYLES START */
 .btn-hover:hover {
@@ -21,7 +26,15 @@ body {
 }
 /* NAVIGATION STYLES END */
 
-/* WORKOUT TAB STYLES */
+
+
+
+/* MAIN STYLES START */
+
+/* MAIN STYLES END */
+
+
+/* WORKOUT SECTION STYLES */
 /* drop down styles */
 select {
     background-image: none;
@@ -33,6 +46,21 @@ select:hover {
     border: 5px solid #69A4B5;
     transition: all 0.4s ease-in-out;
 }
+/* WORKOUT SECTION STYLES END */
+
+
+
+/* SAVED STYLES START */
+
+/* SAVED STYLES END */
+
+
+
+/* RECIPE STYLES START */
+
+/* RECIPE STYLES END */
+
+
 
 
 /* REVIEW */
