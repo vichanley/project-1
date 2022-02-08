@@ -15,10 +15,17 @@
     />
     <!-- css link -->
     <link rel="stylesheet" href="./assets/tailwind/output.css" />
-    <title>fitgainz</title>
+    <title>Nutrigainz</title>
+    <link rel = "icon" href = "./assets/img/favicon.ico" type = "x-icon">
   </head>
 
   <body>
+
+    <!-- Logo -->
+    <section class="flex items-center justify-center mt-6 mb-2 ">
+      <img src="./assets/img/nutrigainz.svg" alt="Nutrigainz logo" width="325" height="100"> 
+    </section>
+
     <!-- home page -->
     <main
       class="w-full h-[46rem] flex items-center justify-center bg-gradient-to-r from-[color:var(--primary)] to-secondary"
@@ -32,10 +39,18 @@
     <!-- bottom navigation -->
     <nav class="sticky bottom-0 bg-gradient-to-r from-[color:var(--primary)] to-secondary text-white border-t-4">
       <section class="grid grid-cols-4 grid-rows-1 gap-4">
-        <button class=""><i class="fas fa-carrot"></i></button>
-        <button><i class="fas fa-home"></i></button>
-        <button><i class="fas fa-list"></i></button>
-        <button><i class="fas fa-dumbbell"></i></button>
+        <button onclick="location.href='./recipesUI.html'" type="button">
+          <i class="fas fa-carrot"></i>
+        </button>
+        <button onclick="location.href='./index.html'" type="button">
+          <i class="fas fa-home"></i>
+        </button>
+        <button onclick="location.href='./UX-withoutJS.html'" type="button">
+          <i class="fas fa-list"></i>
+        </button>
+        <button onclick="location.href='./recipes.html'" type="button">
+          <i class="fas fa-dumbbell"></i>
+        </button>
       </section>
     </nav>
     <script src="./assets/js/recipes.js"></script>
